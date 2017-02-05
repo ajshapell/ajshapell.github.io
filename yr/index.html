@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Map Example</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,700|Roboto+Condensed:700">
+    <style>
+        *,
+        *:after,
+        *:before {
+            box-sizing: inherit;
+        }
+
+        html {
+            box-sizing: border-box;
+            font-size: 62.5%;
+        }
+
+        body {
+            font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            font-size: 1.6em;
+            font-weight: 300;
+            letter-spacing: .01em;
+            line-height: 1.5;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        hr {
+            border: none;
+        }
+
+        hr.section-header {
+            margin-top: -15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgb(203, 27, 26);
+            width: 60px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .emph {
+            color: rgb(203, 27, 26);
+            font-weight: 400;
+        }
+
+        .program-category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 700px) {
+            .program-category-buttons {
+                flex-direction: column;
+            }
+        }
+
+        button {
+            flex: 1;
+            margin: 5px;
+            height: 38px;
+            padding: 0 30px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #555;
+            text-align: center;
+            line-height: 1.5;
+            text-transform: uppercase;
+            text-decoration: none;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px;
+            border: 1px solid #bbb;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background-color 0.3s linear;
+        }
+
+        button:hover,
+        button:focus {
+            outline: 0;
+        }
+
+        #legal.active {
+            transition: background-color 0.3s linear;
+            background-color: #3CC47C;
+            color: rgb(255, 255, 255);
+        }
+
+        #education.active {
+            transition: background-color 0.3s linear;
+            background-color: #3990FF;
+            color: rgb(255, 255, 255);
+        }
+
+        #employment.active {
+            transition: background-color 0.3s linear;
+            background-color: #e09419;
+            color: rgb(255, 255, 255);
+        }
+
+        #housing.active {
+            transition: background-color 0.3s linear;
+            background-color: #828081;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Our Partners</h1>
+        <hr class="section-header" />
+        <p>Youth Represent partners with organizations throughout New York City, to get you access to a wide variety of services. The map below shows the locations of many of our service partners. <span class="emph">Click on a map marker to get more detail on any of our partners, or click on one or more of the buttons above the map to filter only those services you are most interested in.</span></p>
+        <div class="program-category-buttons">
+            <button id="legal" class="active">Legal</button>
+            <button id="education" class="active">Education</button>
+            <button id="employment" class="active">Employment</button>
+            <button id="housing" class="active">Housing</button>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script>
+        var activeCategories = ['other', 'legal', 'education', 'employment', 'housting'];
+
+        var poi = [{
+                name: 'Youth Represent Headquarters',
+                categoryId: 'yr',
+                lat: 40.7128912,
+                lng: -74.0109908
+            },
+            {
+                name: 'CASES (Center for Alternative Sentencing and Employment Services)',
+                categoryId: 'employment',
+                lat: 40.716557,
+                lng: -74.003427
+            },
+            {
+                name: 'Center for Employment Opportunities',
+                categoryId: 'employment',
+                lat: 40.706444,
+                lng: -74.012498
+            },
+            {
+                name: 'The Fortune Society',
+                categoryId: 'employment',
+                lat: 40.750467,
+                lng: -73.934713
+            },
+            {
+                name: 'Advocates for Children',
+                categoryId: 'legal',
+                lat: 40.748676,
+                lng: -73.991795
+            },
+            {
+                name: 'City Bar Justice Center Legal Hotline',
+                categoryId: 'legal',
+                lat: 40.755739,
+                lng: -73.982136
+            },
+            {
+                name: 'The Door – Legal Services',
+                categoryId: 'legal',
+                lat: 40.724938,
+                lng: -74.005564
+            },
+            {
+                name: 'Covenant House New York',
+                categoryId: 'housing',
+                lat: 40.758550,
+                lng: -73.995995
+            },
+            {
+                name: 'Y Roads Center Bronx',
+                categoryId: 'education',
+                lat: 40.816767,
+                lng: -73.920350
+            },
+            {
+                name: 'Y Roads Center Jamaica',
+                categoryId: 'education',
+                lat: 40.704075,
+                lng: -73.798033
+            },
+            {
+                name: 'Getting Out Staying Out',
+                categoryId: 'education',
+                lat: 40.800033,
+                lng: -73.943648
+            },
+            {
+                name: 'Harlem Community Justice Center',
+                categoryId: 'legal',
+                lat: 40.801343,
+                lng: -73.938481
+            },
+            {
+                name: 'Queens Community House',
+                categoryId: 'education',
+                lat: 40.736458,
+                lng: -73.850162
+            },
+            {
+              name: 'YouthLEAD - Cypress Hills',
+              categoryId: 'education',
+              lat: 40.693314,
+              lng: -73.869057
+            }
+        ]
+
+        // Determine custom icon for use in the marker based on the
+        // POIs category
+        var iconBase = '/yr/';
+        function getMarkerIcon(categoryId) {
+            if (categoryId) {
+                icon = iconBase + 'images/' + categoryId + '.png'
+            } else {
+                icon = null;
+            }
+            return icon
+        }
+
+        // Initialize map with all markers
+        var markers = {};
+        var map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 40.757704,
+                    lng: -73.9
+                },
+                zoom: 11,
+                styles: [{
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#f5f5f5"
+                        }]
+                    },
+                    {
+                        "elementType": "labels.icon",
+                        "stylers": [{
+                            "visibility": "off"
+                        }]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#616161"
+                        }]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{
+                            "color": "#f5f5f5"
+                        }]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#bdbdbd"
+                        }]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#eeeeee"
+                        }]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#757575"
+                        }]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#e5e5e5"
+                        }]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#9e9e9e"
+                        }]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#ffffff"
+                        }]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#757575"
+                        }]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#dadada"
+                        }]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#616161"
+                        }]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#9e9e9e"
+                        }]
+                    },
+                    {
+                        "featureType": "transit.line",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#e5e5e5"
+                        }]
+                    },
+                    {
+                        "featureType": "transit.station",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#eeeeee"
+                        }]
+                    },
+                    {
+                        "featureType": "transit.station.rail",
+                        "stylers": [{
+                                "saturation": -100
+                            },
+                            {
+                                "visibility": "on"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#c9c9c9"
+                        }]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#9e9e9e"
+                        }]
+                    }
+                ],
+                gestureHandling: 'cooperative',
+                scrollwheel: false,
+            });
+
+            var infowindow = new google.maps.InfoWindow({});
+            var marker;
+
+            for (var i = 0; i < poi.length; i++) {
+                // Create a marker
+                marker = new google.maps.Marker({
+                    position: {
+                        lat: poi[i].lat,
+                        lng: poi[i].lng
+                    },
+                    map: map,
+                    icon: getMarkerIcon(poi[i].categoryId)
+                });
+                // Add marker to an object containing all markers
+                markers[poi[i].name] = marker;
+
+                marker.addListener('click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(poi[i].name);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+        }
+
+        function removeFromArray(arraySel, value) {
+            var i = arraySel.indexOf(value);
+            if (i != -1) {
+                arraySel.splice(i, 1);
+            }
+        }
+
+        /**
+         * When a button representing a category  is clicked, add or remove
+         * markers associated with POIs of that category type based on the status,
+         * i.e. active or inactive, of the button at the time it was pressed
+         */
+        function modifyCategory(categoryId, modification) {
+            if (modification == 'add') {
+                activeCategories.push(categoryId);
+                for (var i = 0; i < poi.length; i++) {
+                    if (poi[i].categoryId == categoryId) {
+                        var marker = markers[poi[i].name];
+                        marker.setMap(map);
+                    }
+                }
+            } else if (modification == 'remove') {
+                removeFromArray(activeCategories, categoryId);
+                for (var i = 0; i < poi.length; i++) {
+                    if (poi[i].categoryId == categoryId) {
+                        var marker = markers[poi[i].name];
+                        marker.setMap(null);
+                    }
+                }
+            }
+        }
+
+        function filterResults() {
+            var classes = this.classList;
+            if (classes.contains("active")) {   
+                classes.remove("active");
+                modifyCategory(this.id, 'remove');
+            } else {   
+                classes.add("active"); 
+                modifyCategory(this.id, 'add');
+            }
+        }
+
+        var elements = document.querySelectorAll(".program-category-buttons button");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener("click", this.filterResults, false);
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgTFNhIYG_YqfGpvIp10OJUBf2_L2M4do&callback=initMap" async defer></script>
+</body>
+
+</html>
