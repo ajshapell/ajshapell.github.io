@@ -7,124 +7,139 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,700|Roboto+Condensed:700">
     <style>
-        *,
-        *:after,
-        *:before {
-            box-sizing: inherit;
-        }
+    *,
+    *:after,
+    *:before {
+        box-sizing: inherit;
+    }
 
-        html {
-            box-sizing: border-box;
-            font-size: 62.5%;
-        }
+    html {
+        box-sizing: border-box;
+        font-size: 62.5%;
+    }
 
-        body {
-            font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-            font-size: 1.6em;
-            font-weight: 300;
-            letter-spacing: .01em;
-            line-height: 1.5;
-        }
+    body {
+        font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        font-size: 1.6em;
+        font-weight: 300;
+        letter-spacing: .01em;
+        line-height: 1.5;
+    }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Roboto Condensed', sans-serif;
-            font-weight: 700;
-            text-align: center;
-        }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 700;
+        text-align: center;
+    }
 
-        hr {
-            border: none;
-        }
+    hr {
+        border: none;
+    }
 
-        hr.section-header {
-            margin-top: -15px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid rgb(203, 27, 26);
-            width: 60px;
-        }
+    hr.section-header {
+        margin-top: -15px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid rgb(203, 27, 26);
+        width: 60px;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-        #map {
-            height: 400px;
-            width: 100%;
-        }
+    #map {
+        height: 400px;
+        width: 100%;
+    }
 
-        .emph {
-            color: rgb(203, 27, 26);
-            font-weight: 400;
-        }
+    .emph {
+        color: rgb(203, 27, 26);
+        font-weight: 400;
+    }
 
-        .program-category-buttons {
-            display: flex;
+    .program-category-buttons {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
             flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        margin-bottom: 15px;
+    }
 
-        @media (max-width: 700px) {
-            .program-category-buttons {
-                flex-direction: column;
-            }
+    @media (max-width: 700px) {
+        .program-category-buttons {
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
         }
+    }
 
-        button {
-            flex: 1;
-            margin: 5px;
-            height: 38px;
-            padding: 0 30px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #555;
-            text-align: center;
-            line-height: 1.5;
-            text-transform: uppercase;
-            text-decoration: none;
-            white-space: nowrap;
-            background-color: transparent;
-            border-radius: 4px;
-            border: 1px solid #bbb;
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: background-color 0.3s linear;
-        }
+    button {
+        -webkit-box-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
+        margin: 5px;
+        height: 38px;
+        padding: 0 30px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #555;
+        text-align: center;
+        line-height: 1.5;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        background-color: transparent;
+        border-radius: 4px;
+        border: 1px solid #bbb;
+        cursor: pointer;
+        box-sizing: border-box;
+        -webkit-transition: background-color 0.3s linear;
+        transition: background-color 0.3s linear;
+    }
 
-        button:hover,
-        button:focus {
-            outline: 0;
-        }
+    button:hover,
+    button:focus {
+        outline: 0;
+    }
 
-        #legal.active {
-            transition: background-color 0.3s linear;
-            background-color: #3CC47C;
-            color: rgb(255, 255, 255);
-        }
+    #legal.active {
+        -webkit-transition: background-color 0.3s linear;
+        transition: background-color 0.3s linear;
+        background-color: #3CC47C;
+        color: rgb(255, 255, 255);
+    }
 
-        #education.active {
-            transition: background-color 0.3s linear;
-            background-color: #3990FF;
-            color: rgb(255, 255, 255);
-        }
+    #education.active {
+        -webkit-transition: background-color 0.3s linear;
+        transition: background-color 0.3s linear;
+        background-color: #3990FF;
+        color: rgb(255, 255, 255);
+    }
 
-        #employment.active {
-            transition: background-color 0.3s linear;
-            background-color: #e09419;
-            color: rgb(255, 255, 255);
-        }
+    #employment.active {
+        -webkit-transition: background-color 0.3s linear;
+        transition: background-color 0.3s linear;
+        background-color: #e09419;
+        color: rgb(255, 255, 255);
+    }
 
-        #housing.active {
-            transition: background-color 0.3s linear;
-            background-color: #828081;
-            color: rgb(255, 255, 255);
-        }
+    #housing.active {
+        -webkit-transition: background-color 0.3s linear;
+        transition: background-color 0.3s linear;
+        background-color: #828081;
+        color: rgb(255, 255, 255);
+    }
     </style>
 </head>
 
